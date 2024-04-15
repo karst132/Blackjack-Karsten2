@@ -89,6 +89,16 @@ namespace Blackjack_Karsten2
             int decks = 1; //amount of decks if not chansed
             int players = 1; //amount of players if not chansed
             bool playingRound;
+            bool statisticsAvailable = false;
+            Console.WriteLine("always");
+            Console.WriteLine("type 'stop' to stop the game");
+            Console.WriteLine("pre game");
+            Console.WriteLine("type 'options decks nr.' to chanse the amount of decks");
+            Console.WriteLine("type 'options players nr.' to chanse the amount of players");
+            Console.WriteLine("type 'start' to start");
+            Console.WriteLine("playing pre starting round");
+            Console.WriteLine();
+            Console.WriteLine("type 'start' or 'start round' to start a new round");
             while (!start)
             {
                 input = Console.ReadLine();
@@ -167,9 +177,19 @@ namespace Blackjack_Karsten2
             {
                 Console.WriteLine("started");
 
+
                 // Method.Card method = new();
                 // Console.WriteLine("♠♣♥♦");
                 Deck deck = new(decks);
+                //for(int i = 0;deck.cards.Count > i;i++){
+                //    Console.WriteLine(i + " " + deck.cards[i].Suit + " " + deck.cards[i].Name);
+                //}
+
+                List<Player> playersList = new();
+                for (int i = 0; players > i; i++)
+                {
+                    playersList.Add(new Player());
+                }
                 deck.Shuffle(); //let dealer shuffel deck
                 while (playing)
                 {
@@ -186,7 +206,7 @@ namespace Blackjack_Karsten2
                             playing = false;
                             stop = true;
                         }
-                        else if (inputArray.Length == 1 && inputArray[0] == "start")
+                        else if ((inputArray.Length == 1 && inputArray[0] == "start") || (inputArray.Length == 2 && inputArray[0] == "start" && inputArray[1] == "round"))
                         {
                             if (cardsDealt)
                             {
@@ -200,6 +220,22 @@ namespace Blackjack_Karsten2
                         }
                         else if (inputArray.Length == 2 && inputArray[0] == "deals" && inputArray[1] == "cards")
                         {
+                            List<Card>? tempCards = deck.GetAndRemoveCard((1+playersList.Count)*2);
+                            if(tempCards == null)
+                            {
+                                Console.WriteLine("shuffel discard pile in deck first");
+                            }
+                            else
+                            {
+                                for (int i = 0; i < playersList.Count; i++)
+                                {
+                                    playersList[i].NewHand();
+                                }
+                                for (int i = 0; i < ((1 + playersList.Count) * 2); i++)
+                                { 
+                                }
+
+                            }
 
                         }
                     }
@@ -210,9 +246,9 @@ namespace Blackjack_Karsten2
                     }
                 }
             }
-            // for(int i = 0;deck.Cards.Count > i;i++){
-            //     Console.WriteLine(i + " " + deck.Cards[i].Suit + " " + deck.Cards[i].Name);
-            // }
+            //for(int i = 0;deck.cards.Count > i;i++){
+            //    Console.WriteLine(i + " " + deck.cards[i].Suit + " " + deck.cards[i].Name);
+            //}
 
 
 
@@ -228,7 +264,14 @@ namespace Blackjack_Karsten2
             // player.NewHand();
             // player.AddCardsToHands(0,Cards);
             // player.Split();
+            if (statisticsAvailable)
+            {
 
+            }
+            else
+            {
+                Console.WriteLine("not engough data for statistics");
+            }
 
         }
     }

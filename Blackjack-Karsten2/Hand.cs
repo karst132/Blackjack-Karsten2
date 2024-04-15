@@ -11,20 +11,32 @@ namespace Blackjack_Karsten2
         public readonly bool Dealer;
         public readonly bool FromSplit;
         private List<Card> Cards = new List<Card>(); //may have stoped somting from working
-
         public List<Card>? cards { get; } //may have stoped somting from working
+
+        private List<Card> HiddenCards = new List<Card>();
+        public List<Card>? hiddenCards { get; }
         public Hand(bool dealer, bool fromSplit)
         {
             Dealer = dealer;
             FromSplit = fromSplit;
         }
-        public void AddCards(List<Card> cards)
+        public void AddCards(List<Card> cards, List<Card>? hiddenCards = null)
         {
+            hiddenCards ??= new List<Card>();
             for (int i = 0; i < cards.Count; i++)
             {
                 Cards.Add(new((int)cards[i].Suit, cards[i].Value, cards[i].Name));
             }
+            if (Dealer)
+            {
+                for (int i = 0; i < hiddenCards.Count; i++)
+                {
+                    Cards.Add(new((int)hiddenCards[i].Suit, hiddenCards[i].Value, hiddenCards[i].Name));
+                }
+            }
         }
+
+
 
         public int HandValue()
         {
@@ -64,7 +76,7 @@ namespace Blackjack_Karsten2
             }
         }
 
-        public List<Card> GetCards()
+/*        public List<Card> GetCards()
         {
             List<Card> tempCards = new();
             for (int i = 0; i < Cards.Count; i++)
@@ -72,6 +84,6 @@ namespace Blackjack_Karsten2
                 tempCards.Add(new((int)Cards[i].Suit, Cards[i].Value, Cards[i].Name));
             }
             return tempCards;
-        }
+        }*/
     }
 }

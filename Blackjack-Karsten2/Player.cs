@@ -37,10 +37,11 @@ namespace Blackjack_Karsten2
         }
         public void Split()
         {
-            List<Card> tempCards = new();
+            List<Card> tempCards;
             if (Hands.Count == 1 && Hands[0].CanSplit() && !HasSplitHands)
             {
-                tempCards = Hands[0].GetCards();
+                tempCards = Hands[0].cards;
+                tempCards ??= new List<Card>();
                 Hands.Remove(Hands[0]);
                 for (int i = 0; i < 2; i++)
                 {

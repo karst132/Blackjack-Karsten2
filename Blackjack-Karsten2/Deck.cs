@@ -9,7 +9,8 @@ namespace Blackjack_Karsten2
     internal class Deck
     {
         private Random rnd = new Random();
-        public readonly List<Card> Cards = new();
+        private List<Card> Cards = new();
+        public List<Card> cards { get { return this.Cards; } }; //may have stopped somthing from working
 
         //used to create the deck
         public Deck(int decks)
