@@ -190,17 +190,19 @@ namespace Blackjack_Karsten2
                 {
                     playersList.Add(new Player());
                 }
+                Dealer dealer = new();
                 deck.Shuffle(); //let dealer shuffel deck
                 while (playing)
                 {
 
                     playingRound = false;
                     cardsDealt = false;
-                    input = Console.ReadLine();
-                    input ??= "";
-                    inputArray = Fuctions.StringToWords(input);
+
                     while (!playingRound && !stop)
-                    {
+                    {                    
+                        input = Console.ReadLine();
+                        input ??= "";
+                        inputArray = Fuctions.StringToWords(input);
                         if (inputArray.Length == 1 && inputArray[0] == "stop")
                         {
                             playing = false;
@@ -231,10 +233,27 @@ namespace Blackjack_Karsten2
                                 {
                                     playersList[i].NewHand();
                                 }
-                                for (int i = 0; i < ((1 + playersList.Count) * 2); i++)
-                                { 
+                                dealer.NewHand();
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    for (int j = 0; j < playersList.Count; j++)
+                                    {
+                                        List<Card> packageCards = new List<Card>();
+                                        packageCards.Add(tempCards[i*(playersList.Count+1)+j]);
+    /*                                    for (int k = 0; k < packageCards.Count; k++)
+                                        {
+                                            Console.WriteLine(packageCards[k].Name + " " + packageCards[k].Suit +" "+j+" count "+ packageCards.Count);
+                                        }*/
+                                        playersList[j].AddCardsToHands(0, packageCards);
+                                    }
+                                    List<Card> packageCardsDealer = new List<Card>();
+                                    packageCardsDealer.Add(tempCards[playersList.Count+i*(playersList.Count+1)]);
+/*                                    for (int k = 0; k < packageCardsDealer.Count; k++)
+                                    {
+                                        Console.WriteLine(packageCardsDealer[k].Name + " " + packageCardsDealer[k].Suit + " " + i + " count " + packageCardsDealer.Count);
+                                    }*/
+                                    dealer.AddCardsToHands(0, packageCardsDealer);
                                 }
-
                             }
 
                         }

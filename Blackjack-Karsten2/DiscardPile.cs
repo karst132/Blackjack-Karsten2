@@ -9,7 +9,7 @@ namespace Blackjack_Karsten2
     internal class DiscardPile
     {
         public readonly List<Card> Cards = new();
-        public List<Card> cards { get { return this.Cards; } };
+        public List<Card> cards { get { return this.Cards; } }
         public void AddCards(List<Card> cards)
         {
             for (int i = 0; i < cards.Count; i++)
@@ -28,4 +28,4 @@ namespace Blackjack_Karsten2
 
     }
 }
-}
+

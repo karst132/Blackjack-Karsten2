@@ -10,7 +10,7 @@ namespace Blackjack_Karsten2
     {
         private Random rnd = new Random();
         private List<Card> Cards = new();
-        public List<Card> cards { get { return this.Cards; } }; //may have stopped somthing from working
+        public List<Card> cards { get { return this.Cards; } } //may have stopped somthing from working
 
         //used to create the deck
         public Deck(int decks)
