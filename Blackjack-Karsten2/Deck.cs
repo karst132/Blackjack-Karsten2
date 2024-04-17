@@ -11,7 +11,7 @@ namespace Blackjack_Karsten2
         private Random rnd = new Random();
         private List<Card> Cards = new();
         public List<Card> cards { get { return this.Cards; } } //may have stopped somthing from working
-
+        private DiscardPile Discard = new DiscardPile();
         //used to create the deck
         public Deck(int decks)
         {
@@ -152,6 +152,12 @@ namespace Blackjack_Karsten2
             {
                 Cards.Add(new((int)newCards[i].Suit, newCards[i].Value, newCards[i].Name));
             }
+        }
+
+        public void Reshuffel()
+        {
+            RefillDeck(Discard.Emty());
+            Shuffle();
         }
     }
 }
