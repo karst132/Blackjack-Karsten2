@@ -19,7 +19,7 @@ namespace Blackjack_Karsten2
         }
 
         public List<Card> Emty()
-        {//make it return a list of all cards removed 
+        {
             List<Card> removedCards = new List<Card>();
             for (int i = 0; i < Cards.Count; i++)
             {

@@ -26,7 +26,5 @@ namespace Blackjack_Karsten2
             Value = value;
             Name = name;
         }
-
-
     }
 }

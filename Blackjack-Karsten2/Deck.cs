@@ -10,10 +10,10 @@ namespace Blackjack_Karsten2
     {
         private Random rnd = new Random();
         private List<Card> Cards = new();
-        public List<Card> cards { get { return this.Cards; } } //may have stopped somthing from working
+        public List<Card> cards { get { return this.Cards; } }
         private DiscardPile Discard = new DiscardPile();
-        //used to create the deck
-        public Deck(int decks)
+        
+        public Deck(int decks)//used to create the deck
         {
             int Value;
             string Name;
@@ -80,29 +80,9 @@ namespace Blackjack_Karsten2
             return inputList;
         }
 
-
-        // private List<int> SortReverse(List<int> inputList){
-        //     bool solved = false;
-        //     int saveInt;
-        //     if(inputList.Count > 1){
-        //         while(!solved){
-        //             solved = true;
-        //             for(int i = 1;i < inputList.Count;i++){
-        //                 if(inputList[i-1] < inputList[i]){
-        //                     solved = false;
-        //                     saveInt = inputList[i];
-        //                     inputList[i] = inputList[i-1];
-        //                     inputList[i - 1] = saveInt;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     return inputList;
-        // }
-
         //used to shuffle the deck
-        public void Shuffle()
-        {//shit algorithem
+        public void Shuffle()//bad algorithem need optimsing
+        { 
             List<Card> OldCards = new();
             for (int i = 0; i < Cards.Count; i++)
             {
@@ -113,7 +93,6 @@ namespace Blackjack_Karsten2
             for (int i = 0; i < OldCards.Count; i++)
             {
                 Posision = rnd.Next(OldCards.Count - UsedPosisions.Count);
-                // Console.WriteLine(OldCards.Count-UsedPosisions.Count +" "+Posision);
                 for (int j = 0; j < UsedPosisions.Count; j++)
                 {
                     if (Posision >= UsedPosisions[j])
@@ -121,7 +100,6 @@ namespace Blackjack_Karsten2
                         Posision++;
                     }
                 }
-                // Console.WriteLine(Posision);
                 Cards[Posision] = OldCards[i];
                 UsedPosisions.Add(Posision);
                 UsedPosisions = Sort(UsedPosisions);
@@ -158,6 +136,11 @@ namespace Blackjack_Karsten2
         {
             RefillDeck(Discard.Emty());
             Shuffle();
+        }
+
+        public void AddToDiscard (List<Card> cards)
+        {
+            Discard.AddCards(cards);
         }
     }
 }

@@ -15,13 +15,27 @@ namespace Blackjack_Karsten2
             Stand,
             Split,
         }
-
         private List<Hand> Hands = new();
+        public List<Hand> hands { get { return this.Hands; } }
         private bool HasSplitHands = false;
-        private int Tokens = 100;
+        private int Tokens = 200;//curently used in some fuctions but not used to train dealler
+        public int tokens { get { return this.Tokens; } }
+        private int DeafaulBetTokens = 20;
+        
+
         public void NewHand()
         {
-            Hands.Add(new(false, false));
+            int betTokens = 0;
+            if (Tokens > DeafaulBetTokens)
+            {
+                betTokens = DeafaulBetTokens;
+            }
+            else
+            {
+                betTokens = Tokens;
+            }
+            Tokens -= betTokens;
+            Hands.Add(new(false, false, betTokens));
         }
 
         public void AddCardsToHands(int hand, List<Card> cards)
@@ -34,30 +48,51 @@ namespace Blackjack_Karsten2
             List<Card> tempCards = new();
             for (int i = 0; i < Hands.Count; i++)
             {
-                for (int j = 0; i < Hands[i].cards.Count; j++)
+                for (int j = 0; j < Hands[i].cards.Count; j++)
                 {
                     tempCards.Add(new((int)Hands[i].cards[j].Suit, Hands[i].cards[j].Value, Hands[i].cards[j].Name));
                 }
-                Hands.Remove(Hands[i]);
             }
+            Hands.Clear();
             HasSplitHands = false;
             return tempCards;//program.DiscardPile
 
         }
         public void Split(List<Card> newCards)
         {
-            List<Card> tempCards;
+            int betTokens = 0;
+            List<Card> tempCards = new List<Card>(); ;
             if (Hands.Count == 1 && Hands[0].CanSplit() && !HasSplitHands && newCards.Count == 2)
             {
-                tempCards = Hands[0].cards;
-                tempCards ??= new List<Card>();
+                for (int i = 0; i < Hands[0].cards.Count; i++)
+                {
+                    tempCards.Add(new((int)Hands[0].cards[i].Suit, Hands[0].cards[i].Value, Hands[0].cards[i].Name));
+                }
+                betTokens = Hands[0].betTokens;
                 Hands.Remove(Hands[0]);
                 for (int i = 0; i < 2; i++)
                 {
                     List<Card> cardsPackage = new List<Card>();
                     cardsPackage.Add(tempCards[i]);
                     cardsPackage.Add(newCards[i]);
-                    Hands.Add(new(false, true));
+                    if (i == 0)
+                    {
+                        Hands.Add(new(false, true, betTokens));
+                    }
+                    else
+                    {
+                        if (Tokens > DeafaulBetTokens)
+                        {
+                            betTokens = DeafaulBetTokens;
+                        }
+                        else
+                        {
+                            betTokens = Tokens;
+                        }
+                        Tokens -= betTokens;
+                        Hands.Add(new(false, false, betTokens));
+                    }
+                    
                     Hands[i].AddCards(cardsPackage);
                 }
                 HasSplitHands = true;
@@ -79,7 +114,6 @@ namespace Blackjack_Karsten2
             {
                 if (!(HasSplitHands || Hands.Count > 1  /*only one check should realy be needed in this or statement*/  ) && Tokens >= 1 && Hands[0].CanSplit())
                 {
-                    //Split();
                     return (ActionStates)2;//split
                 }
                 else if (Hands[hand].HandValue() > 17)//may be random number between x and y or any need to be another nuber other than 17 may also need to include dealer value

@@ -10,19 +10,28 @@ namespace Blackjack_Karsten2
     {
         public readonly bool Dealer;
         public readonly bool FromSplit;
-        private List<Card> Cards = new List<Card>(); //may have stoped somting from working
-        public List<Card>? cards { get; } //may have stoped somting from working
+        private int BetTokens;
+        public int betTokens { get { return this.BetTokens; } }
+        private List<Card> Cards = new List<Card>();
+        public List<Card> cards { get { return this.Cards; } } 
 
         private List<Card> HiddenCards = new List<Card>();
-        public List<Card>? hiddenCards { get; }
-        public Hand(bool dealer, bool fromSplit)
+        public List<Card> hiddenCards { get { return this.HiddenCards; } }
+        private bool Standing = false;
+        public bool standing { get { return this.Standing; } set { Standing = value; } }
+        public Hand(bool dealer, bool fromSplit,int betTokens = 0)
         {
             Dealer = dealer;
             FromSplit = fromSplit;
+            if (!dealer)
+            {
+                BetTokens = betTokens;
+            }
         }
-        public void AddCards(List<Card> cards, List<Card>? hiddenCards = null)
+        public void AddCards(List<Card>? cards = null, List<Card>? hiddenCards = null)
         {
             hiddenCards ??= new List<Card>();
+            cards ??= new List<Card>();
             for (int i = 0; i < cards.Count; i++)
             {
                 Cards.Add(new((int)cards[i].Suit, cards[i].Value, cards[i].Name));
@@ -31,12 +40,18 @@ namespace Blackjack_Karsten2
             {
                 for (int i = 0; i < hiddenCards.Count; i++)
                 {
-                    Cards.Add(new((int)hiddenCards[i].Suit, hiddenCards[i].Value, hiddenCards[i].Name));
+                    HiddenCards.Add(new((int)hiddenCards[i].Suit, hiddenCards[i].Value, hiddenCards[i].Name));
                 }
             }
         }
 
-
+        public void UnhiddeCards()
+        {
+            for(int i = 0;i < HiddenCards.Count; i++) {
+                cards.Add(new((int)HiddenCards[i].Suit, HiddenCards[i].Value, HiddenCards[i].Name));
+            }
+            HiddenCards.Clear();
+        }
 
         public int HandValue()
         {
@@ -75,15 +90,5 @@ namespace Blackjack_Karsten2
                 return false;
             }
         }
-
-/*        public List<Card> GetCards()
-        {
-            List<Card> tempCards = new();
-            for (int i = 0; i < Cards.Count; i++)
-            {
-                tempCards.Add(new((int)Cards[i].Suit, Cards[i].Value, Cards[i].Name));
-            }
-            return tempCards;
-        }*/
     }
 }
